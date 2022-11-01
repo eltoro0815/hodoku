@@ -1,2 +1,2 @@
 # hodoku
-Add score for every sudoku cell base on Hoduku http://hodoku.sourceforge.net/
+* add a Clock which measures the time you need to solve
