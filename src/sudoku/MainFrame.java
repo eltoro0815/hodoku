@@ -57,6 +57,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.URL;
 import java.text.MessageFormat;
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -222,6 +224,8 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
      * querying for DataFlavors, it is started an we try again when it expires.
      */
     private Timer clipTimer = new Timer(100, null);
+    
+    private Timer clockTimer;
     /**
      * The file name of the last loded sudoku file
      */
@@ -242,6 +246,8 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
         BUILD = "Build " + dummy[1];
     }
 
+    private boolean bClockIsRunning = false;
+    LocalDateTime startTime;
 
     /**
      * Creates new form MainFrame
@@ -343,6 +349,23 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
             clipTimer.start();
         }
 
+        
+        clockTimer = new Timer(1000, new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (bClockIsRunning) {
+                    LocalDateTime endTime = LocalDateTime.now();
+                    Duration diff = Duration.between(startTime, endTime);
+                    String hms = formatDuration(diff);
+        
+                    progressClockLabel.setText(hms);
+                }
+            }
+        });
+
+        clockTimer.start();
+        
         sudokuPanel = new SudokuPanel(this);
         sudokuPanel.setCellZoomPanel(cellZoomPanel);
         cellZoomPanel.setSudokuPanel(sudokuPanel);
@@ -549,6 +572,8 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
         statusLabelLevel = new javax.swing.JLabel();
         jSeparator8 = new javax.swing.JSeparator();
         progressLabel = new javax.swing.JLabel();
+        jSeparator40 = new javax.swing.JSeparator();
+        progressClockLabel = new javax.swing.JLabel();
         jSeparator24 = new javax.swing.JSeparator();
         statusLabelModus = new javax.swing.JLabel();
         jToolBar1 = new javax.swing.JToolBar();
@@ -584,7 +609,6 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
         neuMenuItem = new javax.swing.JMenuItem();
         jSeparator39 = new javax.swing.JPopupMenu.Separator();
         loadPuzzleMenuItem = new javax.swing.JMenuItem();
-
         savePuzzleMenuItem = new javax.swing.JMenuItem();
         savePuzzleAsMenuItem = new javax.swing.JMenuItem();
         loadConfigMenuItem = new javax.swing.JMenuItem();
@@ -682,7 +706,6 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
             public void windowClosed(java.awt.event.WindowEvent evt) {
                 formWindowClosed(evt);
             }
-
             public void windowClosing(java.awt.event.WindowEvent evt) {
                 formWindowClosing(evt);
             }
@@ -696,12 +719,12 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
         javax.swing.GroupLayout statusPanelColorResultLayout = new javax.swing.GroupLayout(statusPanelColorResult);
         statusPanelColorResult.setLayout(statusPanelColorResultLayout);
         statusPanelColorResultLayout.setHorizontalGroup(
-                statusPanelColorResultLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGap(0, 30, Short.MAX_VALUE)
+            statusPanelColorResultLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 30, Short.MAX_VALUE)
         );
         statusPanelColorResultLayout.setVerticalGroup(
-                statusPanelColorResultLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGap(0, 15, Short.MAX_VALUE)
+            statusPanelColorResultLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 15, Short.MAX_VALUE)
         );
 
         statusLinePanel.add(statusPanelColorResult);
@@ -719,12 +742,12 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
         javax.swing.GroupLayout statusPanelColor1Layout = new javax.swing.GroupLayout(statusPanelColor1);
         statusPanelColor1.setLayout(statusPanelColor1Layout);
         statusPanelColor1Layout.setHorizontalGroup(
-                statusPanelColor1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGap(0, 15, Short.MAX_VALUE)
+            statusPanelColor1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 15, Short.MAX_VALUE)
         );
         statusPanelColor1Layout.setVerticalGroup(
-                statusPanelColor1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGap(0, 15, Short.MAX_VALUE)
+            statusPanelColor1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 15, Short.MAX_VALUE)
         );
 
         jPanel1.add(statusPanelColor1);
@@ -739,12 +762,12 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
         javax.swing.GroupLayout statusPanelColor2Layout = new javax.swing.GroupLayout(statusPanelColor2);
         statusPanelColor2.setLayout(statusPanelColor2Layout);
         statusPanelColor2Layout.setHorizontalGroup(
-                statusPanelColor2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGap(0, 15, Short.MAX_VALUE)
+            statusPanelColor2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 15, Short.MAX_VALUE)
         );
         statusPanelColor2Layout.setVerticalGroup(
-                statusPanelColor2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGap(0, 15, Short.MAX_VALUE)
+            statusPanelColor2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 15, Short.MAX_VALUE)
         );
 
         jPanel1.add(statusPanelColor2);
@@ -759,12 +782,12 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
         javax.swing.GroupLayout statusPanelColor3Layout = new javax.swing.GroupLayout(statusPanelColor3);
         statusPanelColor3.setLayout(statusPanelColor3Layout);
         statusPanelColor3Layout.setHorizontalGroup(
-                statusPanelColor3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGap(0, 15, Short.MAX_VALUE)
+            statusPanelColor3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 15, Short.MAX_VALUE)
         );
         statusPanelColor3Layout.setVerticalGroup(
-                statusPanelColor3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGap(0, 15, Short.MAX_VALUE)
+            statusPanelColor3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 15, Short.MAX_VALUE)
         );
 
         jPanel1.add(statusPanelColor3);
@@ -779,12 +802,12 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
         javax.swing.GroupLayout statusPanelColor4Layout = new javax.swing.GroupLayout(statusPanelColor4);
         statusPanelColor4.setLayout(statusPanelColor4Layout);
         statusPanelColor4Layout.setHorizontalGroup(
-                statusPanelColor4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGap(0, 15, Short.MAX_VALUE)
+            statusPanelColor4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 15, Short.MAX_VALUE)
         );
         statusPanelColor4Layout.setVerticalGroup(
-                statusPanelColor4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGap(0, 15, Short.MAX_VALUE)
+            statusPanelColor4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 15, Short.MAX_VALUE)
         );
 
         jPanel1.add(statusPanelColor4);
@@ -799,12 +822,12 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
         javax.swing.GroupLayout statusPanelColor5Layout = new javax.swing.GroupLayout(statusPanelColor5);
         statusPanelColor5.setLayout(statusPanelColor5Layout);
         statusPanelColor5Layout.setHorizontalGroup(
-                statusPanelColor5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGap(0, 15, Short.MAX_VALUE)
+            statusPanelColor5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 15, Short.MAX_VALUE)
         );
         statusPanelColor5Layout.setVerticalGroup(
-                statusPanelColor5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGap(0, 15, Short.MAX_VALUE)
+            statusPanelColor5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 15, Short.MAX_VALUE)
         );
 
         jPanel1.add(statusPanelColor5);
@@ -819,12 +842,12 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
         javax.swing.GroupLayout statusPanelColorClearLayout = new javax.swing.GroupLayout(statusPanelColorClear);
         statusPanelColorClear.setLayout(statusPanelColorClearLayout);
         statusPanelColorClearLayout.setHorizontalGroup(
-                statusPanelColorClearLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGap(0, 15, Short.MAX_VALUE)
+            statusPanelColorClearLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 15, Short.MAX_VALUE)
         );
         statusPanelColorClearLayout.setVerticalGroup(
-                statusPanelColorClearLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGap(0, 15, Short.MAX_VALUE)
+            statusPanelColorClearLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 15, Short.MAX_VALUE)
         );
 
         jPanel1.add(statusPanelColorClear);
@@ -839,12 +862,12 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
         javax.swing.GroupLayout statusPanelColorResetLayout = new javax.swing.GroupLayout(statusPanelColorReset);
         statusPanelColorReset.setLayout(statusPanelColorResetLayout);
         statusPanelColorResetLayout.setHorizontalGroup(
-                statusPanelColorResetLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGap(0, 15, Short.MAX_VALUE)
+            statusPanelColorResetLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 15, Short.MAX_VALUE)
         );
         statusPanelColorResetLayout.setVerticalGroup(
-                statusPanelColorResetLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGap(0, 15, Short.MAX_VALUE)
+            statusPanelColorResetLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 15, Short.MAX_VALUE)
         );
 
         jPanel1.add(statusPanelColorReset);
@@ -873,9 +896,17 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
         statusLinePanel.add(jSeparator8);
 
         progressLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/invalid20.png"))); // NOI18N
-        progressLabel.setText("null");
+        progressLabel.setText("");
         progressLabel.setToolTipText(bundle.getString("MainFrame.progressLabel.toolTipText")); // NOI18N
         statusLinePanel.add(progressLabel);
+
+        jSeparator40.setOrientation(javax.swing.SwingConstants.VERTICAL);
+        jSeparator40.setPreferredSize(new java.awt.Dimension(2, 17));
+        statusLinePanel.add(jSeparator40);
+
+        progressClockLabel.setText(bundle.getString("MainFrame.progressClockLabel.text")); // NOI18N
+        progressClockLabel.setToolTipText(bundle.getString("MainFrame.progressClockLabel.toolTipText")); // NOI18N
+        statusLinePanel.add(progressClockLabel);
 
         jSeparator24.setOrientation(javax.swing.SwingConstants.VERTICAL);
         jSeparator24.setPreferredSize(new java.awt.Dimension(2, 17));
@@ -1114,35 +1145,35 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
         javax.swing.GroupLayout hintPanelLayout = new javax.swing.GroupLayout(hintPanel);
         hintPanel.setLayout(hintPanelLayout);
         hintPanelLayout.setHorizontalGroup(
-                hintPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, hintPanelLayout.createSequentialGroup()
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 476, Short.MAX_VALUE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(hintPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                        .addComponent(neuerHinweisButton)
-                                        .addComponent(solveUpToButton))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(hintPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                        .addComponent(hinweisAusfuehrenButton)
-                                        .addComponent(hinweisAbbrechenButton)))
+            hintPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, hintPanelLayout.createSequentialGroup()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 476, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(hintPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(neuerHinweisButton)
+                    .addComponent(solveUpToButton))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(hintPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(hinweisAusfuehrenButton)
+                    .addComponent(hinweisAbbrechenButton)))
         );
 
-        hintPanelLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[]{hinweisAbbrechenButton, hinweisAusfuehrenButton, neuerHinweisButton, solveUpToButton});
+        hintPanelLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {hinweisAbbrechenButton, hinweisAusfuehrenButton, neuerHinweisButton, solveUpToButton});
 
         hintPanelLayout.setVerticalGroup(
-                hintPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(hintPanelLayout.createSequentialGroup()
-                                .addGroup(hintPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(hinweisAusfuehrenButton, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(neuerHinweisButton))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(hintPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(hinweisAbbrechenButton)
-                                        .addComponent(solveUpToButton)))
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 77, Short.MAX_VALUE)
+            hintPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(hintPanelLayout.createSequentialGroup()
+                .addGroup(hintPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(hinweisAusfuehrenButton, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(neuerHinweisButton))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(hintPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(hinweisAbbrechenButton)
+                    .addComponent(solveUpToButton)))
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 77, Short.MAX_VALUE)
         );
 
-        hintPanelLayout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[]{hinweisAbbrechenButton, hinweisAusfuehrenButton, neuerHinweisButton, solveUpToButton});
+        hintPanelLayout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {hinweisAbbrechenButton, hinweisAusfuehrenButton, neuerHinweisButton, solveUpToButton});
 
         outerSplitPane.setRightComponent(hintPanel);
 
@@ -1151,7 +1182,7 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
         dateiMenu.setMnemonic(java.util.ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.dateiMenuMnemonic").charAt(0));
         dateiMenu.setText(bundle.getString("MainFrame.dateiMenu.text")); // NOI18N
 
-        neuMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_N, java.awt.event.InputEvent.CTRL_MASK));
+        neuMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_N, java.awt.event.InputEvent.CTRL_DOWN_MASK));
         neuMenuItem.setMnemonic(java.util.ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.neuMenuItemMnemonic").charAt(0));
         neuMenuItem.setText(bundle.getString("MainFrame.neuMenuItem.text")); // NOI18N
         neuMenuItem.addActionListener(new java.awt.event.ActionListener() {
@@ -1162,7 +1193,7 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
         dateiMenu.add(neuMenuItem);
         dateiMenu.add(jSeparator39);
 
-        loadPuzzleMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.CTRL_MASK));
+        loadPuzzleMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.CTRL_DOWN_MASK));
         loadPuzzleMenuItem.setMnemonic(java.util.ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.loadMenuItemMnemonic").charAt(0));
         loadPuzzleMenuItem.setText(bundle.getString("MainFrame.loadPuzzleMenuItem.text")); // NOI18N
         loadPuzzleMenuItem.addActionListener(new java.awt.event.ActionListener() {
@@ -1172,8 +1203,7 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
         });
         dateiMenu.add(loadPuzzleMenuItem);
 
-
-        savePuzzleMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_MASK));
+        savePuzzleMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_DOWN_MASK));
         savePuzzleMenuItem.setMnemonic(java.util.ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.savePuzzleMenuItem.mnemonic").charAt(0));
         savePuzzleMenuItem.setText(bundle.getString("MainFrame.savePuzzleMenuItem.text")); // NOI18N
         savePuzzleMenuItem.setEnabled(false);
@@ -1184,7 +1214,7 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
         });
         dateiMenu.add(savePuzzleMenuItem);
 
-        savePuzzleAsMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.SHIFT_MASK));
+        savePuzzleAsMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.SHIFT_DOWN_MASK));
         savePuzzleAsMenuItem.setMnemonic(java.util.ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.saveAsMenuItemMnemonic").charAt(0));
         savePuzzleAsMenuItem.setText(bundle.getString("MainFrame.savePuzzleAsMenuItem.text")); // NOI18N
         savePuzzleAsMenuItem.addActionListener(new java.awt.event.ActionListener() {
@@ -1222,7 +1252,7 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
         });
         dateiMenu.add(seiteEinrichtenMenuItem);
 
-        druckenMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_P, java.awt.event.InputEvent.CTRL_MASK));
+        druckenMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_P, java.awt.event.InputEvent.CTRL_DOWN_MASK));
         druckenMenuItem.setMnemonic(java.util.ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.druckenMenuItemMnemonic").charAt(0));
         druckenMenuItem.setText(bundle.getString("MainFrame.druckenMenuItem.text")); // NOI18N
         druckenMenuItem.addActionListener(new java.awt.event.ActionListener() {
@@ -1280,7 +1310,7 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
         dateiMenu.add(spielSpielenMenuItem);
         dateiMenu.add(jSeparator36);
 
-        beendenMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_X, java.awt.event.InputEvent.ALT_MASK));
+        beendenMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_X, java.awt.event.InputEvent.ALT_DOWN_MASK));
         beendenMenuItem.setMnemonic(java.util.ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.beendenMenuItemMnemonic").charAt(0));
         beendenMenuItem.setText(bundle.getString("MainFrame.beendenMenuItem.text")); // NOI18N
         beendenMenuItem.addActionListener(new java.awt.event.ActionListener() {
@@ -1295,7 +1325,7 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
         bearbeitenMenu.setMnemonic(java.util.ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.bearbeitenMenuMnemonic").charAt(0));
         bearbeitenMenu.setText(bundle.getString("MainFrame.bearbeitenMenu.text")); // NOI18N
 
-        undoMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Z, java.awt.event.InputEvent.CTRL_MASK));
+        undoMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Z, java.awt.event.InputEvent.CTRL_DOWN_MASK));
         undoMenuItem.setMnemonic(java.util.ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.undoMenuItemMnemonic").charAt(0));
         undoMenuItem.setText(bundle.getString("MainFrame.undoMenuItem.text")); // NOI18N
         undoMenuItem.setEnabled(false);
@@ -1306,7 +1336,7 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
         });
         bearbeitenMenu.add(undoMenuItem);
 
-        redoMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Y, java.awt.event.InputEvent.CTRL_MASK));
+        redoMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Y, java.awt.event.InputEvent.CTRL_DOWN_MASK));
         redoMenuItem.setMnemonic(java.util.ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.redoMenuItemMnemonic").charAt(0));
         redoMenuItem.setText(bundle.getString("MainFrame.redoMenuItem.text")); // NOI18N
         redoMenuItem.setEnabled(false);
@@ -1318,7 +1348,7 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
         bearbeitenMenu.add(redoMenuItem);
         bearbeitenMenu.add(jSeparator35);
 
-        copyCluesMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_G, java.awt.event.InputEvent.CTRL_MASK));
+        copyCluesMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_G, java.awt.event.InputEvent.CTRL_DOWN_MASK));
         copyCluesMenuItem.setMnemonic(java.util.ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.copyCluesMenuItemMnemonic").charAt(0));
         copyCluesMenuItem.setText(bundle.getString("MainFrame.copyCluesMenuItem.text")); // NOI18N
         copyCluesMenuItem.addActionListener(new java.awt.event.ActionListener() {
@@ -1337,7 +1367,7 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
         });
         bearbeitenMenu.add(copyFilledMenuItem);
 
-        copyPmGridMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_C, java.awt.event.InputEvent.CTRL_MASK));
+        copyPmGridMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_C, java.awt.event.InputEvent.CTRL_DOWN_MASK));
         copyPmGridMenuItem.setMnemonic(java.util.ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.copyPmGridMenuItemMnemonic").charAt(0));
         copyPmGridMenuItem.setText(bundle.getString("MainFrame.copyPmGridMenuItem.text")); // NOI18N
         copyPmGridMenuItem.addActionListener(new java.awt.event.ActionListener() {
@@ -1374,7 +1404,7 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
         });
         bearbeitenMenu.add(copySSMenuItem);
 
-        pasteMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_V, java.awt.event.InputEvent.CTRL_MASK));
+        pasteMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_V, java.awt.event.InputEvent.CTRL_DOWN_MASK));
         pasteMenuItem.setMnemonic(java.util.ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.pasteMenuItemMnemonic").charAt(0));
         pasteMenuItem.setText(bundle.getString("MainFrame.pasteMenuItem.text")); // NOI18N
         pasteMenuItem.addActionListener(new java.awt.event.ActionListener() {
@@ -1385,7 +1415,7 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
         bearbeitenMenu.add(pasteMenuItem);
         bearbeitenMenu.add(jSeparator34);
 
-        restartSpielMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_R, java.awt.event.InputEvent.CTRL_MASK));
+        restartSpielMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_R, java.awt.event.InputEvent.CTRL_DOWN_MASK));
         restartSpielMenuItem.setMnemonic(java.util.ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.restartSpielMenuItemMnemonic").charAt(0));
         restartSpielMenuItem.setText(bundle.getString("MainFrame.restartSpielMenuItem.text")); // NOI18N
         restartSpielMenuItem.addActionListener(new java.awt.event.ActionListener() {
@@ -1573,7 +1603,7 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
         raetselMenu.setMnemonic(java.util.ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.raetselMenuMnemonic").charAt(0));
         raetselMenu.setText(bundle.getString("MainFrame.raetselMenu.text")); // NOI18N
 
-        vageHintMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F12, java.awt.event.InputEvent.ALT_MASK));
+        vageHintMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F12, java.awt.event.InputEvent.ALT_DOWN_MASK));
         vageHintMenuItem.setMnemonic(java.util.ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.vageHintMenuItemMnemonic").charAt(0));
         vageHintMenuItem.setText(bundle.getString("MainFrame.vageHintMenuItem")); // NOI18N
         vageHintMenuItem.addActionListener(new java.awt.event.ActionListener() {
@@ -1583,7 +1613,7 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
         });
         raetselMenu.add(vageHintMenuItem);
 
-        mediumHintMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F12, java.awt.event.InputEvent.CTRL_MASK));
+        mediumHintMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F12, java.awt.event.InputEvent.CTRL_DOWN_MASK));
         mediumHintMenuItem.setMnemonic(java.util.ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.mediumHintMenuItemMnemonic").charAt(0));
         mediumHintMenuItem.setText(bundle.getString("MainFrame.mediumHintMenuItem.text")); // NOI18N
         mediumHintMenuItem.addActionListener(new java.awt.event.ActionListener() {
@@ -1753,7 +1783,7 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
         });
         ansichtMenu.add(showHintButtonsCheckBoxMenuItem);
 
-        fullScreenMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
+        fullScreenMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F, java.awt.event.InputEvent.SHIFT_DOWN_MASK | java.awt.event.InputEvent.CTRL_DOWN_MASK));
         fullScreenMenuItem.setMnemonic(java.util.ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.fullScreenMenuItem.mnemonic").charAt(0));
         fullScreenMenuItem.setText(bundle.getString("MainFrame.fullScreenMenuItem.text")); // NOI18N
         fullScreenMenuItem.addActionListener(new java.awt.event.ActionListener() {
@@ -2019,6 +2049,10 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 
     private void neuesSpielToolButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_neuesSpielToolButtonActionPerformed
         // neues Spiel in der gewünschten Schwierigkeitsstufe erzeugen
+        
+        bClockIsRunning = true;
+        startTime = LocalDateTime.now();
+        
         int actLevel = Options.getInstance().getActLevel();
         DifficultyLevel actDiffLevel = Options.getInstance().getDifficultyLevel(actLevel);
         if (Options.getInstance().getGameMode() == GameMode.LEARNING) {
@@ -3868,6 +3902,17 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
         }
     }
 
+    private static String formatDuration(Duration duration) {
+        long seconds = duration.getSeconds();
+        long absSeconds = Math.abs(seconds);
+        String positive = String.format(
+            "%d:%02d:%02d",
+            absSeconds / 3600,
+            (absSeconds % 3600) / 60,
+            absSeconds % 60);
+        return seconds < 0 ? "-" + positive : positive;
+    }
+    
     public void setProgressLabel() {
         if (sudokuPanel == null) {
             // do nothing
@@ -3895,6 +3940,10 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
                 intProc = 0;
             }
             progressLabel.setText(intProc + "%");
+            
+            if (intProc == 0) {
+                bClockIsRunning = false;
+            }
         }
     }
 
@@ -4262,6 +4311,7 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
     private javax.swing.JPopupMenu.Separator jSeparator37;
     private javax.swing.JPopupMenu.Separator jSeparator38;
     private javax.swing.JPopupMenu.Separator jSeparator39;
+    private javax.swing.JSeparator jSeparator40;
     private javax.swing.JPopupMenu.Separator jSeparator6;
     private javax.swing.JSeparator jSeparator8;
     private javax.swing.JSeparator jSeparator9;
@@ -4290,6 +4340,7 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
     private javax.swing.JMenuItem pasteMenuItem;
     private javax.swing.JRadioButtonMenuItem playingMenuItem;
     private javax.swing.JRadioButtonMenuItem practisingMenuItem;
+    private javax.swing.JLabel progressClockLabel;
     private javax.swing.JLabel progressLabel;
     private javax.swing.JMenuItem projectHomePageMenuItem;
     private javax.swing.JMenu raetselMenu;

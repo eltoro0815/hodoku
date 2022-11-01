@@ -1422,6 +1422,24 @@
             </Property>
           </Properties>
         </Component>
+        <Component class="javax.swing.JSeparator" name="jSeparator40">
+          <Properties>
+            <Property name="orientation" type="int" value="1"/>
+            <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+              <Dimension value="[2, 17]"/>
+            </Property>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="progressClockLabel">
+          <Properties>
+            <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+              <ResourceString bundle="intl/MainFrame.properties" key="MainFrame.progressClockLabel.text" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
+            </Property>
+            <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+              <ResourceString bundle="intl/MainFrame.properties" key="MainFrame.progressClockLabel.toolTipText" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
+            </Property>
+          </Properties>
+        </Component>
         <Component class="javax.swing.JSeparator" name="jSeparator24">
           <Properties>
             <Property name="orientation" type="int" value="1"/>
