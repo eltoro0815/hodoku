@@ -66,11 +66,14 @@ import javax.swing.ImageIcon;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.Timer;
+import javax.swing.JLabel;
+
 
 import org.w3c.dom.Node;
 import solver.SudokuSolver;
 import solver.SudokuSolverFactory;
 import solver.SudokuStepFinder;
+
 
 /**
  * A specialized JPanel for displaying and manipulating Sudokus.<br>
@@ -1828,9 +1831,12 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
             sudoku.setCell(line, col, number);
             repaint();
             if (sudoku.isSolved() && Options.getInstance().isShowSudokuSolved()) {
-                JOptionPane.showMessageDialog(this, java.util.ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.sudoku_solved"),
-                        java.util.ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.congratulations"),
-                        JOptionPane.INFORMATION_MESSAGE);
+                
+                ImageIcon icon = new ImageIcon(getClass().getResource("/img/winner.png"));
+                JLabel label = new JLabel(java.util.ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.sudoku_solved"));
+                label.setFont(new Font("Arial", Font.BOLD, 48));
+                JOptionPane.showMessageDialog(this, label, java.util.ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.congratulations"), JOptionPane.INFORMATION_MESSAGE, icon);
+                
             }
         }
     }
@@ -3289,9 +3295,12 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
             mainFrame.check();
             repaint();
             if (sudoku.isSolved() && Options.getInstance().isShowSudokuSolved()) {
-                JOptionPane.showMessageDialog(this, java.util.ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.sudoku_solved"),
-                        java.util.ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.congratulations"),
-                        JOptionPane.INFORMATION_MESSAGE);
+               
+                ImageIcon icon = new ImageIcon(getClass().getResource("/img/winner.png"));
+                JLabel label = new JLabel(java.util.ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.sudoku_solved"));
+                label.setFont(new Font("Arial", Font.BOLD, 48));
+                JOptionPane.showMessageDialog(this, label, java.util.ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.congratulations"), JOptionPane.INFORMATION_MESSAGE, icon);
+                
             }
         }
     }
